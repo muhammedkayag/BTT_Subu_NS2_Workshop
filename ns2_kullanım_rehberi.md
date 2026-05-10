@@ -1,35 +1,59 @@
-# NS2 (Network Simulator 2) Temel Kullanımı  
+# NS2 (Network Simulator 2) Temel Kullanımı
+
 ## Basit Ağ Simülasyonu Oluşturma Rehberi
 
----
-
-# 1. NS2 Nedir?
-
-**NS2 (Network Simulator 2)**, bilgisayar ağlarını simüle etmek için kullanılan açık kaynaklı bir simülasyon aracıdır.
-
-NS2 ile şunlar yapılabilir:
-
-- Ağ topolojisi oluşturma
-- Düğümler (node) ekleme
-- Bağlantılar kurma
-- Trafik üretme
-- Paket hareketlerini gözlemleme
-- Performans analizi yapma
-- NAM ile görsel simülasyon izleme
+Bu doküman, NS2 kullanarak temel ağ simülasyonlarının nasıl oluşturulduğunu sade ve anlaşılır şekilde anlatmak amacıyla hazırlanmıştır.
 
 ---
 
-# 2. NS2 Nasıl Çalışır?
+# 📚 İçindekiler
 
-NS2, **TCL (Tool Command Language)** kullanılarak kontrol edilir.
+- NS2 Nedir?
+- NS2 Nasıl Çalışır?
+- TCL Script Yapısı
+- Simülatör Oluşturma
+- Node Oluşturma
+- Link Kurulumu
+- Trafik Oluşturma
+- UDP ve CBR Kullanımı
+- Simülasyonu Çalıştırma
+- NAM ile Görselleştirme
+- Tam Örnek Kod
+
+---
+
+# 🌐 1. NS2 Nedir?
+
+**NS2 (Network Simulator 2)**, bilgisayar ağlarını simüle etmek için kullanılan açık kaynaklı bir ağ simülasyon aracıdır.
+
+NS2 sayesinde:
+
+- Ağ topolojileri oluşturulabilir
+- Router ve bilgisayar düğümleri eklenebilir
+- Trafik simülasyonları yapılabilir
+- Paket hareketleri gözlemlenebilir
+- Ağ performans analizi yapılabilir
+- NAM ile görsel simülasyon izlenebilir
+
+---
+
+# ⚙️ 2. NS2 Nasıl Çalışır?
+
+NS2, **TCL (Tool Command Language)** kullanılarak yönetilir.
 
 Temel çalışma mantığı:
 
 ```text
-TCL Script Yaz → NS2 ile Çalıştır → Trace Dosyası Oluşur → NAM ile Görselleştir
+TCL Script Yaz
+        ↓
+NS2 ile Simülasyonu Çalıştır
+        ↓
+Trace (.tr) Dosyası Oluşur
+        ↓
+NAM ile Görselleştir
 ```
 
-Örnek:
+Örnek çalıştırma komutu:
 
 ```bash
 ns simulation.tcl
@@ -37,44 +61,53 @@ ns simulation.tcl
 
 ---
 
-# 3. Basit TCL Script Yapısı
+# 🧩 3. Basit TCL Script Yapısı
 
-Bir NS2 dosyası genellikle şu bölümlerden oluşur:
+Bir NS2 scripti genellikle şu bölümlerden oluşur:
 
 1. Simülatör oluşturma
-2. Düğümleri oluşturma
-3. Linkleri bağlama
-4. Trafik tanımlama
-5. Simülasyonu başlatma
+2. Trace dosyası oluşturma
+3. Node oluşturma
+4. Link bağlama
+5. Trafik oluşturma
+6. Simülasyonu çalıştırma
 
 ---
 
-# 4. Simülatör Nesnesi Oluşturma
+# 🚀 4. Simülatör Nesnesi Oluşturma
 
-İlk olarak NS2 simülatörü başlatılır.
+İlk olarak bir simülatör nesnesi oluşturulur.
 
 ```tcl
 set ns [new Simulator]
 ```
 
-Buradaki:
+## Açıklama
 
-- `set` → değişken tanımlar
-- `ns` → simülatör değişkeni
-- `new Simulator` → yeni simülatör oluşturur
+| Kod | Açıklama |
+|---|---|
+| `set` | Değişken tanımlar |
+| `ns` | Simülatör değişkeni |
+| `new Simulator` | Yeni simülatör oluşturur |
 
 ---
 
-# 5. Trace ve NAM Dosyaları Oluşturma
+# 📄 5. Trace ve NAM Dosyaları Oluşturma
 
-Simülasyon sonuçlarını kaydetmek için:
+## Trace Dosyası
+
+Simülasyon kayıtlarını tutar.
 
 ```tcl
 set tracefile [open out.tr w]
 $ns trace-all $tracefile
 ```
 
-NAM görselleştirmesi için:
+---
+
+## NAM Dosyası
+
+NAM görselleştirmesi için kullanılır.
 
 ```tcl
 set namfile [open out.nam w]
@@ -83,62 +116,72 @@ $ns namtrace-all $namfile
 
 ---
 
-# 6. Düğüm (Node) Oluşturma
+# 🖥️ 6. Node (Düğüm) Oluşturma
 
 Ağdaki cihazlar node olarak tanımlanır.
 
-Örnek:
-
 ```tcl
 set n0 [$ns node]
 set n1 [$ns node]
 ```
 
-Burada iki farklı düğüm oluşturduk:
+Burada:
 
-- `n0`
-- `n1`
+- `n0` → Birinci düğüm
+- `n1` → İkinci düğüm
 
-Bu düğümler bilgisayar, router veya sunucu olabilir.
+Bu düğümler:
+
+- Bilgisayar
+- Router
+- Sunucu
+
+olarak düşünülebilir.
 
 ---
 
-# 7. Düğümleri Birbirine Bağlama
+# 🔗 7. Düğümleri Birbirine Bağlama
 
-İki düğüm arasında bağlantı kurulur.
+İki node arasında bağlantı kurulur.
 
 ```tcl
 $ns duplex-link $n0 $n1 10Mb 10ms DropTail
 ```
 
-Anlamı:
+## Parametreler
 
-- `10Mb` → bant genişliği
-- `10ms` → gecikme
-- `DropTail` → kuyruk algoritması
-
-Yani:
-
-**10 Mbps hızında, 10 ms gecikmeli bağlantı**
+| Parametre | Açıklama |
+|---|---|
+| `10Mb` | Bant genişliği |
+| `10ms` | Gecikme süresi |
+| `DropTail` | Kuyruk algoritması |
 
 ---
 
-# 8. Trafik Kaynağı Oluşturma (UDP)
+## Bu Bağlantının Anlamı
 
-Veri göndermek için önce bir ajan oluşturulur.
+- 10 Mbps hız
+- 10 ms gecikme
+- DropTail kuyruk yönetimi
+
+---
+
+# 📡 8. UDP Trafik Kaynağı Oluşturma
+
+Veri gönderecek ajan oluşturulur.
 
 ```tcl
 set udp0 [new Agent/UDP]
 $ns attach-agent $n0 $udp0
 ```
 
-Bu ajan `n0` düğümüne bağlanır.
+Bu işlem UDP ajanını `n0` düğümüne bağlar.
 
 ---
 
-# 9. Trafik Alıcısı Oluşturma
+# 📥 9. Trafik Alıcısı Oluşturma
 
-Karşı tarafa alıcı eklenir.
+Karşı düğüme alıcı eklenir.
 
 ```tcl
 set null0 [new Agent/Null]
@@ -147,83 +190,105 @@ $ns attach-agent $n1 $null0
 
 ---
 
-# 10. Gönderici ve Alıcıyı Bağlama
+# 🔄 10. Gönderici ve Alıcıyı Bağlama
 
-İki ajan birbirine bağlanır.
+Ajanlar birbirine bağlanır.
 
 ```tcl
 $ns connect $udp0 $null0
 ```
 
-Artık veri gönderilebilir.
+Böylece veri aktarımı mümkün hale gelir.
 
 ---
 
-# 11. Trafik Üretme (CBR)
+# 📈 11. Trafik Üretme (CBR)
 
-Sabit hızda trafik üretmek için CBR kullanılır.
+CBR (Constant Bit Rate), sabit hızda trafik üretir.
 
 ```tcl
 set cbr0 [new Application/Traffic/CBR]
+
 $cbr0 set packetSize_ 500
 $cbr0 set interval_ 0.01
+
 $cbr0 attach-agent $udp0
 ```
 
-Anlamları:
+---
 
-- `packetSize_ 500` → 500 byte paket
-- `interval_ 0.01` → her 0.01 saniyede bir paket
+## Parametre Açıklamaları
+
+| Parametre | Açıklama |
+|---|---|
+| `packetSize_ 500` | 500 byte paket |
+| `interval_ 0.01` | Her 0.01 saniyede bir paket |
 
 ---
 
-# 12. Trafiği Başlatma ve Durdurma
+# ⏱️ 12. Trafiği Başlatma ve Durdurma
 
-Simülasyon zamanlaması yapılır.
+Simülasyonda zamanlama yapılır.
 
 ```tcl
 $ns at 1.0 "$cbr0 start"
 $ns at 4.0 "$cbr0 stop"
 ```
 
-Yani:
+## Anlamı
 
-- 1. saniyede başla
-- 4. saniyede dur
+| Zaman | İşlem |
+|---|---|
+| `1.0` saniye | Trafiği başlat |
+| `4.0` saniye | Trafiği durdur |
 
 ---
 
-# 13. Simülasyonu Bitirme
+# 🛑 13. Simülasyonu Bitirme
 
-Bitirme fonksiyonu:
+Simülasyon sonunda çalışacak fonksiyon:
 
 ```tcl
 proc finish {} {
+
     global ns tracefile namfile
+
     close $tracefile
     close $namfile
+
     exec nam out.nam &
+
     exit 0
 }
 ```
 
-Simülasyon sonunda:
+---
 
-- Dosyalar kapanır
-- NAM açılır
+## Bu Fonksiyon Ne Yapar?
+
+- Trace dosyasını kapatır
+- NAM dosyasını kapatır
+- NAM uygulamasını açar
+- Simülasyonu sonlandırır
 
 ---
 
-# 14. Simülasyonu Çalıştırma
+# ▶️ 14. Simülasyonu Çalıştırma
 
 ```tcl
 $ns at 5.0 "finish"
+
 $ns run
 ```
 
+Bu kod:
+
+- 5. saniyede simülasyonu bitirir
+- Simülasyonu çalıştırır
+
 ---
 
-# 15. Tam Örnek Kod
+# 🧪 15. Tam Örnek NS2 Kodu
 
 ```tcl
 set ns [new Simulator]
@@ -248,20 +313,27 @@ $ns attach-agent $n1 $null0
 $ns connect $udp0 $null0
 
 set cbr0 [new Application/Traffic/CBR]
+
 $cbr0 set packetSize_ 500
 $cbr0 set interval_ 0.01
+
 $cbr0 attach-agent $udp0
 
 proc finish {} {
+
     global ns tracefile namfile
+
     close $tracefile
     close $namfile
+
     exec nam out.nam &
+
     exit 0
 }
 
 $ns at 1.0 "$cbr0 start"
 $ns at 4.0 "$cbr0 stop"
+
 $ns at 5.0 "finish"
 
 $ns run
@@ -269,53 +341,63 @@ $ns run
 
 ---
 
-# 16. Simülasyonu Çalıştırma
+# 💻 16. Simülasyonu Çalıştırma
 
-Dosyayı kaydet:
+## Dosyayı Oluşturma
 
 ```bash
 nano simulation.tcl
 ```
 
-Çalıştır:
+---
+
+## Simülasyonu Başlatma
 
 ```bash
 ns simulation.tcl
 ```
 
-NAM otomatik açılacaktır.
+Simülasyon tamamlandığında NAM otomatik açılır.
 
 ---
 
-# 17. NAM ile Görselleştirme
+# 🎞️ 17. NAM ile Görselleştirme
 
-NAM penceresinde şunlar görülebilir:
+NAM ekranında şunlar gözlemlenebilir:
 
 - Düğümler
-- Linkler
+- Ağ bağlantıları
 - Paket hareketleri
 - Trafik yoğunluğu
 - Paket kayıpları
 
-Bu sayede ağ davranışı görsel olarak incelenebilir.
+Bu sayede ağ davranışı görsel olarak analiz edilir.
 
 ---
 
-# 18. Özet
+# 📌 18. Genel Özet
 
-NS2 ile temel adımlar:
+NS2 ile temel ağ simülasyonu oluşturma adımları:
 
 1. Simülatör oluştur
-2. Node oluştur
-3. Link kur
-4. Trafik tanımla
-5. Zamanlama yap
+2. Trace dosyası oluştur
+3. Node oluştur
+4. Link bağla
+5. Trafik oluştur
 6. Simülasyonu çalıştır
-7. NAM ile izle
+7. NAM ile incele
 
 ---
 
-# Sonuç
+# 🎯 Sonuç
 
-NS2, ağ protokollerini ve trafik davranışlarını test etmek için güçlü bir araçtır.  
-Basit TCL komutlarıyla farklı ağ senaryoları oluşturulabilir ve analiz edilebilir.
+NS2, ağ protokollerini ve trafik davranışlarını analiz etmek için güçlü bir simülasyon aracıdır.
+
+Basit TCL komutlarıyla:
+
+- Ağ topolojileri kurulabilir
+- Trafik testleri yapılabilir
+- Paket hareketleri analiz edilebilir
+- Performans ölçümleri gerçekleştirilebilir
+
+Bu yapı sayesinde ağ sistemleri gerçek ortama geçmeden önce güvenli şekilde test edilebilir.
