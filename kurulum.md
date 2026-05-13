@@ -22,9 +22,9 @@ Derleme işlemi için gerekli bağımlılıkları yükleyin:
 ```bash
 sudo su
 
-sudo apt-get update
+apt-get update
 
-sudo apt-get install build-essential autoconf automake \
+apt-get install build-essential autoconf automake \
 libxmu-dev libx11-dev libxt-dev -y
 ```
 
