@@ -20,6 +20,8 @@ Bu rehber, `ns-allinone-2.35` paketinin Ubuntu 16.04 LTS üzerinde kaynak koddan
 Derleme işlemi için gerekli bağımlılıkları yükleyin:
 
 ```bash
+sudo su
+
 sudo apt-get update
 
 sudo apt-get install build-essential autoconf automake \
