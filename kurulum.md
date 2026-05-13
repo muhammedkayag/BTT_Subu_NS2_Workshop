@@ -75,11 +75,9 @@ nano ~/.bashrc
 ```bash
 # NS2 Environment Variables
 
-export PATH=$PATH:$HOME/ns-allinone-2.35/bin:$HOME/ns-allinone-2.35/tcl8.5.10/unix:$HOME/ns-allinone-2.35/tk8.5.10/unix
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/ns-allinone-2.35/otcl-1.14:$HOME/ns-allinone-2.35/lib
-
-export TCL_LIBRARY=$TCL_LIBRARY:$HOME/ns-allinone-2.35/tcl8.5.10/library
+export PATH=$PATH:/home/$USER/ns-allinone-2.35/bin:/home/$USER/ns-allinone-2.35/tcl8.5.10/unix:/home/SUSER/ns-allinone-2.35/tk8.5.10/unix
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/$USER/ns-allinone-2.35/otcl-1.14:/home/$USER/ns-allinone-2.35/lib
+export TCL_LIBRARY=$TCL_LIBRARY:/home/$USER/ns-allinone-2.35/tcl8.5.10/library
 ```
 
 > Eğer klasör adını değiştirdiyseniz yolları kendi dizininize göre düzenleyin.
