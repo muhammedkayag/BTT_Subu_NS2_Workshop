@@ -33,11 +33,7 @@ libxmu-dev libx11-dev libxt-dev -y
 `ns-allinone-2.35` paketini indirip arşivden çıkarın:
 
 ```bash
-wget https://sourceforge.net/projects/nsnam/files/allinone/ns-allinone-2.35/ns-allinone-2.35.tar.gz
-
-tar -xvzf ns-allinone-2.35.tar.gz
-
-cd ns-allinone-2.35
+wget https://sourceforge.net/projects/nsnam/files/allinone/ns-allinone-2.35/ns-allinone-2.35.tar.gz && tar -xvzf ns-allinone-2.35.tar.gz && cd ns-allinone-2.35
 ```
 
 ---
@@ -47,7 +43,7 @@ cd ns-allinone-2.35
 Ubuntu 16.04 ve modern GCC sürümlerinde oluşabilen `linkstate/ls.h` hatasını düzeltmek için aşağıdaki komutu çalıştırın:
 
 ```bash
-sed -i 's/.erase/this->erase/g' ns-2.35/linkstate/ls.h
+sed -i 's/.erase/this->erase/g' ns-2.35/linkstate/ls.h && sed -i 's/voidthis/void/g' ns-2.35/linkstate/ls.h && sed -i 's/void->/void /g' ns-2.35/linkstate/ls.h
 ```
 
 ---
