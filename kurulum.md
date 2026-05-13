@@ -70,7 +70,7 @@ ile işlem yapmamanız gerekmektedir.
 ## `.bashrc` Dosyasını Açın
 
 ```bash
-nano ~/.bashrc
+exit && nano ~/.bashrc
 ```
 
 ## Dosyanın En Altına Şu Satırları Ekleyin
