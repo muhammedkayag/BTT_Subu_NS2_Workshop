@@ -62,7 +62,8 @@ Kurulum scriptini çalıştırın:
 
 # ⚙️ Ortam Değişkenlerini Yapılandırma
 
-Kurulum tamamlandıktan sonra `ns` ve `nam` komutlarının terminalin her yerinden çalışabilmesi için environment variable tanımlaması yapılmalıdır.
+Kurulum tamamlandıktan sonra `ns` ve `nam` komutlarının terminalin her yerinden çalışabilmesi için environment variable tanımlaması yapılmalıdır. Burdan sonraki komutlar kullanılırken root kullanıcısı 
+ile işlem yapmamanız gerekmektedir.
 
 ## `.bashrc` Dosyasını Açın
 
