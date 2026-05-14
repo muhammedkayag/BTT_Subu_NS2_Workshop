@@ -393,21 +393,28 @@ nano throughput.awk
 
 ```awk
 BEGIN {
-    receivedBytes = 0;
+    interval = 0.1
 }
 
 {
-    event = $1;
-    time = $2;
-    packetSize = $6;
+    event = $1
+    time  = $2
+    pktSize = $6
 
-    if(event == "r") {
+    # AGT seviyesinde alınan paketler
+    if (event == "r" && $4 == "AGT") {
 
-        receivedBytes += packetSize;
+        bytes += pktSize
 
-        throughput = (receivedBytes * 8) / time / 1000;
+        if (time >= nextTime) {
 
-        print time, throughput;
+            throughput = (bytes * 8) / (interval * 1000)
+
+            print time, throughput
+
+            bytes = 0
+            nextTime += interval
+        }
     }
 }
 ```
@@ -461,27 +468,16 @@ nano plot.plt
 İçerik:
 
 ```gnuplot
-# PNG çıktısı oluştur
-set terminal png size 1024,768
-
-# Çıkış dosyası
+set terminal png size 800,600
 set output "throughput.png"
 
-# Grafik başlığı
 set title "NS2 Throughput Graph"
-
-# Eksen isimleri
 set xlabel "Time (s)"
-set ylabel "Throughput (Kbps)"
+set ylabel "Throughput (kbps)"
 
-# Izgara
 set grid
 
-# Çizgi stili
-set style line 1 lt 1 lw 2 pt 7 ps 1.5
-
-# Grafik çizimi
-plot "throughput.dat" using 1:2 with lines ls 1 title "Traffic"
+plot "throughput.dat" using 1:2 with lines lw 2 title "Traffic"
 ```
 
 ---
