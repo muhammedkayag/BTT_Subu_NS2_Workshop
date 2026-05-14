@@ -394,26 +394,29 @@ nano throughput.awk
 ```awk
 BEGIN {
     interval = 0.1
+    nexttime = interval
+    bytes = 0
 }
 
 {
-    event = $1
-    time  = $2
-    pktSize = $6
+    # receive event
+    if ($1 == "r") {
 
-    # AGT seviyesinde alınan paketler
-    if (event == "r" && $4 == "AGT") {
+        time = $2
 
-        bytes += pktSize
+        # paket boyutu
+        pkt_size = $6
 
-        if (time >= nextTime) {
+        bytes += pkt_size
+
+        if (time >= nexttime) {
 
             throughput = (bytes * 8) / (interval * 1000)
 
-            print time, throughput
+            print nexttime, throughput
 
             bytes = 0
-            nextTime += interval
+            nexttime += interval
         }
     }
 }
