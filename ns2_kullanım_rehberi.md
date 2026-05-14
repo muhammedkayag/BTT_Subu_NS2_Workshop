@@ -375,17 +375,154 @@ Bu sayede ağ davranışı görsel olarak analiz edilir.
 
 ---
 
-# 📌 18. Genel Özet
+# 🧮 18. AWK ile Trace Analizi
 
-NS2 ile temel ağ simülasyonu oluşturma adımları:
+NS2 simülasyonu tamamlandıktan sonra oluşan `.tr` dosyası analiz edilir.
 
-1. Simülatör oluştur
-2. Trace dosyası oluştur
-3. Node oluştur
-4. Link bağla
-5. Trafik oluştur
-6. Simülasyonu çalıştır
-7. NAM ile incele
+AWK kullanılarak throughput gibi performans verileri çıkarılabilir.
+
+---
+
+## AWK Scripti Oluşturma
+
+```bash
+nano throughput.awk
+```
+
+İçerik:
+
+```awk
+BEGIN {
+    receivedBytes = 0;
+}
+
+{
+    event = $1;
+    time = $2;
+    packetSize = $6;
+
+    if(event == "r") {
+
+        receivedBytes += packetSize;
+
+        throughput = (receivedBytes * 8) / time / 1000;
+
+        print time, throughput;
+    }
+}
+```
+
+---
+
+# ▶️ 19. AWK Scriptini Çalıştırma
+
+```bash
+awk -f throughput.awk out.tr > throughput.dat
+```
+
+Bu işlem sonunda:
+
+```text
+throughput.dat
+```
+
+dosyası oluşur.
+
+---
+
+## Örnek Veri Çıktısı
+
+```text
+0.5 120
+1.0 240
+1.5 310
+2.0 450
+```
+
+| Sütun | Açıklama |
+|---|---|
+| 1 | Zaman |
+| 2 | Throughput (Kbps) |
+
+---
+
+# 📈 20. Gnuplot ile Grafik Oluşturma
+
+Gnuplot kullanılarak throughput grafiği oluşturulabilir.
+
+---
+
+## Gnuplot Scripti Oluşturma
+
+```bash
+nano plot.plt
+```
+
+İçerik:
+
+```gnuplot
+# PNG çıktısı oluştur
+set terminal png size 1024,768
+
+# Çıkış dosyası
+set output "throughput.png"
+
+# Grafik başlığı
+set title "NS2 Throughput Graph"
+
+# Eksen isimleri
+set xlabel "Time (s)"
+set ylabel "Throughput (Kbps)"
+
+# Izgara
+set grid
+
+# Çizgi stili
+set style line 1 lt 1 lw 2 pt 7 ps 1.5
+
+# Grafik çizimi
+plot "throughput.dat" using 1:2 with lines ls 1 title "Traffic"
+```
+
+---
+
+# ▶️ 21. Gnuplot Scriptini Çalıştırma
+
+```bash
+gnuplot plot.plt
+```
+
+Komut çalıştıktan sonra:
+
+```text
+throughput.png
+```
+
+dosyası oluşacaktır.
+
+---
+
+# 🖼️ 22. Grafiği Görüntüleme
+
+Linux üzerinde:
+
+```bash
+xdg-open throughput.png
+```
+
+---
+
+# 📌 23. Tam İş Akışı
+
+```text
+NS2 Simülasyonu
+        ↓
+out.tr oluşur
+        ↓
+AWK ile throughput.dat oluşturulur
+        ↓
+Gnuplot ile throughput.png oluşturulur
+```
 
 ---
 
@@ -400,4 +537,11 @@ Basit TCL komutlarıyla:
 - Paket hareketleri analiz edilebilir
 - Performans ölçümleri gerçekleştirilebilir
 
-Bu yapı sayesinde ağ sistemleri gerçek ortama geçmeden önce güvenli şekilde test edilebilir.
+AWK ve Gnuplot kullanılarak ise:
+
+- Throughput
+- Packet Loss
+- Delay
+- Jitter
+
+gibi ağ performans metrikleri görsel olarak analiz edilebilir.
