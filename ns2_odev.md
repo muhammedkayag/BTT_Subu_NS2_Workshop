@@ -19,7 +19,7 @@ Bu çalışmada:
 Önce terminalden aşağıdaki komut çalıştırılır:
 
 ```bash
-nano odev2_asadbek.tcl
+nano odev2_isim.tcl
 ```
 
 Ardından aşağıdaki kodlar dosyanın içine yapıştırılır.
@@ -33,11 +33,11 @@ Ardından aşağıdaki kodlar dosyanın içine yapıştırılır.
 set ns [new Simulator]
 
 # Trace dosyaları
-set tracefile [open "AsadbekDropTailA.tr" w]
+set tracefile [open "isimDropTailA.tr" w]
 $ns trace-all $tracefile
 
 # NAM animasyon
-set namfile [open "Asadbek.nam" w]
+set namfile [open "isim.nam" w]
 $ns namtrace-all $namfile
 
 # 6 Node oluştur
@@ -118,7 +118,7 @@ proc finish {} {
     $ns flush-trace
     close $tracefile
     close $namfile
-    exec nam Asadbek.nam &
+    exec nam isim.nam &
     exit 0
 }
 
@@ -184,7 +184,7 @@ Mantığı:
 Terminalde:
 
 ```bash
-nano odev2_asadbek_red.tcl
+nano odev2_isim_red.tcl
 ```
 
 komutu çalıştırılır.
@@ -198,11 +198,11 @@ komutu çalıştırılır.
 set ns [new Simulator]
 
 # Trace dosyaları
-set tracefile [open "AsadbekREDB.tr" w]
+set tracefile [open "isimREDB.tr" w]
 $ns trace-all $tracefile
 
 # NAM animasyon
-set namfile [open "Asadbek.nam" w]
+set namfile [open "isim.nam" w]
 $ns namtrace-all $namfile
 
 # 6 Node oluştur
@@ -283,7 +283,7 @@ proc finish {} {
     $ns flush-trace
     close $tracefile
     close $namfile
-    exec nam Asadbek.nam &
+    exec nam isim.nam &
     exit 0
 }
 
@@ -315,7 +315,7 @@ RED (**Random Early Detection**) daha gelişmiş bir kuyruk algoritmasıdır.
 Aşağıdaki komut çalıştırılır:
 
 ```bash
-ns odev2_asadbek_red.tcl
+ns odev2_isim_red.tcl
 ```
 
 Bu işlem sonunda:
@@ -330,7 +330,7 @@ Bu işlem sonunda:
 Şimdi paket sayılarını analiz etmek için aşağıdaki komut çalıştırılır.
 
 ```bash
-awk '{ if ($1=="r") print int($2) }' AsadbekDropTailA.tr | sort -n | uniq -c | awk '{print $2, $1}' > drop2.txt && awk '{ if ($1=="r") print int($2) }' AsadbekREDB.tr | sort -n | uniq -c | awk '{print $2, $1}' > red2.txt
+awk '{ if ($1=="r") print int($2) }' isimDropTailA.tr | sort -n | uniq -c | awk '{print $2, $1}' > drop2.txt && awk '{ if ($1=="r") print int($2) }' isimREDB.tr | sort -n | uniq -c | awk '{print $2, $1}' > red2.txt
 ```
 
 ---
@@ -367,9 +367,9 @@ nano grafik.plt
 
 ```gnuplot
 set terminal pngcairo size 900,600 enhanced font "Arial,10"
-set output "Asadbek_graph.png"
+set output "isim_graph.png"
 
-set title "Queue Algorithm Comparison (Asadbek)"
+set title "Queue Algorithm Comparison (isim)"
 set xlabel "Time (seconds)"
 set ylabel "Packets per second"
 
@@ -404,7 +404,7 @@ komutu çalıştırılır.
 Bu işlem sonunda:
 
 ```text
-Asadbek_graph.png
+isim_graph.png
 ```
 
 isimli grafik oluşacaktır.
